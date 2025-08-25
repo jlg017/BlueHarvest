@@ -1,0 +1,19 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "q:\\unrealprojects\\blueharvest\\blueharvest\\intermediate\\build\\win64\\unrealeditor\\inc\\blueharvest\\uht\\blueharvestgamemode.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "q:\\unrealprojects\\blueharvest\\blueharvest\\intermediate\\build\\win64\\x64\\blueharvesteditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "q:\\unrealprojects\\blueharvest\\blueharvest\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\blueharvest\\definitions.blueharvest.h",
+            "q:\\unrealprojects\\blueharvest\\blueharvest\\source\\blueharvest\\blueharvestgamemode.h",
+            "q:\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\gameframework\\gamemodebase.h",
+            "q:\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\engine\\serverstatreplicator.h",
+            "q:\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\serverstatreplicator.generated.h",
+            "q:\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\gamemodebase.generated.h",
+            "q:\\unrealprojects\\blueharvest\\blueharvest\\intermediate\\build\\win64\\unrealeditor\\inc\\blueharvest\\uht\\blueharvestgamemode.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

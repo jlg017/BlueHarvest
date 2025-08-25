@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"Q:\\UnrealProjects\\BlueHarvest\\BlueHarvest\\Source\\BlueHarvest\\BlueHarvest.Build.cs",
+		"Q:\\UnrealProjects\\BlueHarvest\\BlueHarvest\\Source\\BlueHarvest.Target.cs",
+		"Q:\\UnrealProjects\\BlueHarvest\\BlueHarvest\\Source\\BlueHarvestEditor.Target.cs"
+	],
+	"EngineVersion": "5.3.2"
+}
