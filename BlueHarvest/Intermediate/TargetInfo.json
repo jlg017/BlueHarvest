@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "BlueHarvest",
+			"Path": "..\\Source\\BlueHarvest.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "BlueHarvestEditor",
+			"Path": "..\\Source\\BlueHarvestEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

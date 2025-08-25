@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "q:\\unrealprojects\\blueharvest\\blueharvest\\source\\blueharvest\\blueharvest.cpp",
+        "ProvidedModule": "",
+        "PCH": "q:\\unrealprojects\\blueharvest\\blueharvest\\intermediate\\build\\win64\\x64\\blueharvesteditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "q:\\unrealprojects\\blueharvest\\blueharvest\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\blueharvest\\definitions.blueharvest.h",
+            "q:\\unrealprojects\\blueharvest\\blueharvest\\source\\blueharvest\\blueharvest.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
