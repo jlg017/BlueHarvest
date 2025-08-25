@@ -6,11 +6,21 @@
 			"description": "Default Uncontrolled Changelist",
 			"files": [
 				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/StarterContent/Architecture/Floor_400x400.uasset",
-				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/Blueprints/BP_AICharacter.uasset",
-				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/Blueprints/BP_AIEnemy.uasset",
 				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/ThirdPerson/Maps/ThirdPersonMap.umap",
 				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/D/DE/SWSI13675DVYIZ0N4NF7Y3.uasset",
-				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/3/P3/O43ETCZTFMLWWH1CJ941H2.uasset"
+				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/3/P3/O43ETCZTFMLWWH1CJ941H2.uasset",
+				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/Characters/Enemy/BP_Enemy.uasset",
+				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/Characters/Player/BP_Player.uasset",
+				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/ThirdPerson/Blueprints/BP_BlueHarvestGameMode.uasset",
+				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/Blueprints/BP_BlueHarvestGameMode.uasset",
+				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/Characters/Mannequins/Materials/Instances/Quinn/MI_Quinn_03.uasset",
+				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/Characters/Mannequins/Materials/Instances/Quinn/MI_Quinn_04.uasset",
+				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/3/CS/74Q5D34O9C6N73899J47RZ.uasset",
+				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/Characters/Player/Materials/MI_Quinn_04.uasset",
+				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/Characters/Player/Materials/MI_Quinn_03.uasset",
+				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/9/J5/VEHAYWR2ZGKOOI13ZKO1N7.uasset",
+				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/Blueprints/BP_AICharacter.uasset",
+				"Q:/UnrealProjects/BlueHarvest/BlueHarvest/Content/Blueprints/BP_AIEnemy.uasset"
 			]
 		}
 	]
