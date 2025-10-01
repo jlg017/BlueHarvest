@@ -2,8 +2,11 @@
 
 
 #include "SingleVisibilityCharacter.h"
-#include "GameFramework/GameState.h"
+
 #include "GameFramework/PlayerState.h"
+#include "Kismet/GameplayStatics.h"
+
+#include "BlueHarvest/GameStates/FollowerGameState.h"
 
 // Sets default values
 ASingleVisibilityCharacter::ASingleVisibilityCharacter()
@@ -11,8 +14,6 @@ ASingleVisibilityCharacter::ASingleVisibilityCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
-
-	PlayerIds = TArray<int32>();
 }
 
 // Called when the game starts or when spawned
@@ -20,29 +21,15 @@ void ASingleVisibilityCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	VisibleToPlayerIndex = 0;
-	VisibilityChangeTimer = 0.f;
-}
-
-// Called every frame
-void ASingleVisibilityCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	VisibilityChangeTimer += DeltaTime;
-	//UE_LOG(LogTemp, Warning, TEXT("Tick;VisibilityChangeTimer=%f;MaxVisibilityChangeTime=%f"), VisibilityChangeTimer, MaxVisibilityChangeTime);
-	if (VisibilityChangeTimer > MaxVisibilityChangeTime)
+	AFollowerGameState* MyGameState = Cast<AFollowerGameState>(UGameplayStatics::GetGameState(GetWorld()));
+	if (MyGameState)
 	{
-		VisibleToPlayerIndex = VisibleToPlayerIndex == 0 ? 1 : 0;
-		VisibilityChangeTimer = 0;
-
-		if (PlayerIds.Num() == 0) {
-			GetPlayerIds();
-		}
-
-		UpdateVisibilityRPC();
+		MyGameState->OnTargetedPlayerIdChanged.AddDynamic(this, &ASingleVisibilityCharacter::UpdateVisibility);
 	}
-
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("SingleVisibilityCharacter::GameState is null"));
+	}
 }
 
 // Called to bind functionality to input
@@ -52,38 +39,13 @@ void ASingleVisibilityCharacter::SetupPlayerInputComponent(UInputComponent* Play
 
 }
 
-void ASingleVisibilityCharacter::GetPlayerIds() {
-	PlayerIds = TArray<int32>();
-	AGameStateBase* GameState = GetWorld()->GetGameState<AGameStateBase>();
-	if (GameState) {
-		TArray<APlayerState*> Players = GameState->PlayerArray;
-		if (Players.Num() == 0) {
-			UE_LOG(LogTemp, Warning, TEXT("No Player states found"));
-			return;
-		}
-		for (APlayerState* Player : Players) {
-			int32 PlayerId = Player->PlayerId;
-			PlayerIds.Add(PlayerId);
-			UE_LOG(LogTemp, Warning, TEXT("Adding ID=%d"), PlayerId);
-		}
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("Game state is null"));
-	}
-}
+void ASingleVisibilityCharacter::UpdateVisibility(int32 TargetedPlayerId)
+{
+	int32 PlayerId = GetWorld()->GetFirstPlayerController()->GetPlayerState<APlayerState>()->GetPlayerId();
 
-void ASingleVisibilityCharacter::UpdateVisibilityRPC_Implementation() {
-	if (PlayerIds.Num() == 0) {
-		UE_LOG(LogTemp, Warning, TEXT("No player ids to search, making invisible"));
-		GetMesh()->SetVisibility(false);
-		return;
-	}
+	UE_LOG(LogTemp, Display, TEXT("Updating visibility for new TargetedPlayerId=%d; Local player id=%d"), PlayerId, TargetedPlayerId);
 
-	//TODO: Change visibility
-	int32 PlayerId = GetWorld()->GetFirstPlayerController()->GetPlayerState<APlayerState>()->PlayerId;
-	int32 VisiblePlayerId = PlayerIds[VisibleToPlayerIndex];
-	UE_LOG(LogTemp, Warning, TEXT("LocalNetId=%d; VisiblePlayerNetId=%d"), PlayerId, VisiblePlayerId);
-	if (VisiblePlayerId == PlayerId) {
+	if (TargetedPlayerId == PlayerId) {
 		GetMesh()->SetVisibility(true);
 	}
 	else {

@@ -20,18 +20,10 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	int32 VisibleToPlayerIndex;
-	float VisibilityChangeTimer;
-	TArray<int32> PlayerIds;
-	
-	UFUNCTION(Client, Reliable)
-	void UpdateVisibilityRPC();
-
-	void GetPlayerIds();
+	UFUNCTION()
+	void UpdateVisibility(int32 TargetedPlayerId);
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
