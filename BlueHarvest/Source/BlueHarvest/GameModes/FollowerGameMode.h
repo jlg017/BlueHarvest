@@ -21,6 +21,7 @@ public:
 
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
 
+	/*
 protected:
 
 	UPROPERTY(Transient)
@@ -34,4 +35,5 @@ private:
 
 	float MaxTargetedTime = 5.0f;
 	float CurrentTargetedTime = 0.0f;
+	*/
 };

@@ -19,9 +19,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
-	UFUNCTION()
-	void UpdateVisibility(int32 TargetedPlayerId);
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	class USelectiveVisibilityComponent* VisibilityComponent;
 
 public:	
 

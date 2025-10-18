@@ -4,8 +4,6 @@
 #include "FollowerGameMode.h"
 #include "BlueHarvest/GameStates/FollowerGameState.h"
 
-#include "GameFramework/PlayerState.h"
-
 
 AFollowerGameMode::AFollowerGameMode()
 {
@@ -16,10 +14,12 @@ void AFollowerGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	/*
 	if (ShouldUpdateTargetPlayerId(DeltaSeconds))
 	{
 		UpdateTargetPlayerId();
 	}
+	*/
 }
 
 void AFollowerGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
@@ -30,7 +30,7 @@ void AFollowerGameMode::InitGame(const FString& MapName, const FString& Options,
 	
 	Super::InitGame(MapName, Options, ErrorMessage);
 	
-	UpdateTargetPlayerId();
+	//UpdateTargetPlayerId();
 
 	/*
 	if (GameState)
@@ -58,6 +58,7 @@ void AFollowerGameMode::InitGame(const FString& MapName, const FString& Options,
 	*/
 }
 
+/*
 bool AFollowerGameMode::ShouldUpdateTargetPlayerId(float DeltaSeconds)
 {
 	CurrentTargetedTime += DeltaSeconds;
@@ -119,3 +120,4 @@ void AFollowerGameMode::SetTargetedPlayerId(int32 NewTargetedPlayerId)
 		FullGameState->SetTargetedPlayerId(NewTargetedPlayerId);
 	}
 }
+*/

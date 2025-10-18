@@ -13,7 +13,7 @@ void AFollowerGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 
 void AFollowerGameState::SetTargetedPlayerId(int32 NewTargetedPlayerId)
 {
-	if (GetLocalRole() == ROLE_Authority)
+	if (HasAuthority())
 	{
 		UE_LOG(LogGameState, Log, TEXT("TargetedPlayerId Changed from %d to %d"), TargetedPlayerId, NewTargetedPlayerId);
 
