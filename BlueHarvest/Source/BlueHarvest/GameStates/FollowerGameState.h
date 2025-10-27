@@ -6,7 +6,7 @@
 #include "GameFramework/GameState.h"
 #include "FollowerGameState.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTargetedPlayerIdChanged, int32, NewValue);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTargetedPlayerIdChanged, int32, NewValue);
 
 /**
  * 
@@ -24,8 +24,8 @@ public:
 	/** Updates the targeted player id and calls the appropriate transition functions, only valid on server */
 	void SetTargetedPlayerId(int32 NewTargetPlayerId);
 
-	UPROPERTY(BlueprintAssignable, Category = "GameState")
-	FOnTargetedPlayerIdChanged OnTargetedPlayerIdChanged;
+	//UPROPERTY(BlueprintAssignable, Category = "GameState")
+	//FOnTargetedPlayerIdChanged OnTargetedPlayerIdChanged;
 	
 protected:
 

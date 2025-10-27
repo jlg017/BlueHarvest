@@ -28,7 +28,7 @@ void AFollowerGameState::OnRep_TargetedPlayerId()
 {
 	if (PreviousTargetedPlayerId != TargetedPlayerId)
 	{
-		OnTargetedPlayerIdChanged.Broadcast(TargetedPlayerId);
+		//OnTargetedPlayerIdChanged.Broadcast(TargetedPlayerId);
 	}
 	PreviousTargetedPlayerId = TargetedPlayerId;
 }

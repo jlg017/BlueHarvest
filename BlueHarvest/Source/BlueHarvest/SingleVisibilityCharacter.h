@@ -15,6 +15,9 @@ public:
 	// Sets default values for this character's properties
 	ASingleVisibilityCharacter();
 
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -22,12 +25,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	class USelectiveVisibilityComponent* VisibilityComponent;
 
-public:	
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visibility")
-	float MaxVisibilityChangeTime = 5.f;
+private:
+	int32 VisibleToPlayerId;
+	
+	UFUNCTION()
+	virtual void UpdateVisibleToPlayerId(int32 TargetedPlayerId);
 
 };

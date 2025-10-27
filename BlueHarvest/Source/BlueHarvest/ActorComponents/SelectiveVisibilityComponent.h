@@ -7,6 +7,7 @@
 #include "SelectiveVisibilityComponent.generated.h"
 
 
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BLUEHARVEST_API USelectiveVisibilityComponent : public UActorComponent
 {
@@ -18,29 +19,18 @@ public:
 	// Sets default values for this component's properties
 	USelectiveVisibilityComponent();
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	void SetVisibleToPlayerId(int32 NewVisibleToPlayerId);
+	FORCEINLINE int32 GetVisibleToPlayerId() { return VisibleToPlayerId; }
 
 protected:
 
-	UPROPERTY(ReplicatedUsing = OnRep_TargetedPlayerId, BlueprintReadOnly, Category = Target)
-	int32 TargetedPlayerId;
-
-	virtual bool ShouldUpdateTargetPlayerId(float DeltaSeconds);
-
-	UFUNCTION(Server, Reliable)
-	virtual void Server_UpdateTargetPlayerId();
+	UPROPERTY(ReplicatedUsing = OnRep_VisibleToPlayerId, BlueprintReadOnly, Category = Target)
+	int32 VisibleToPlayerId;
 
 private:
-
-	float MaxTargetedTime = 5.0f;
-	float CurrentTargetedTime = 0.0f;
 		
 	UFUNCTION()
-	virtual void OnRep_TargetedPlayerId();
+	virtual void OnRep_VisibleToPlayerId();
+
+	void UpdateVisibility();
 };

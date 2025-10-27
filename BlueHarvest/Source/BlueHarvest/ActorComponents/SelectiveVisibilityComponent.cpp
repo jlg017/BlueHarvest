@@ -3,103 +3,37 @@
 
 #include "SelectiveVisibilityComponent.h"
 
-#include "GameFramework/GameStateBase.h"
-#include "GameFramework/PlayerState.h"
 #include "GameFramework/Character.h"
-
+#include "GameFramework/PlayerState.h"
 #include "Net/UnrealNetwork.h"
 
 
 // Sets default values for this component's properties
 USelectiveVisibilityComponent::USelectiveVisibilityComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
 	SetIsReplicatedByDefault(true);
-
-	// ...
 }
 
 void USelectiveVisibilityComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(USelectiveVisibilityComponent, TargetedPlayerId);
+	DOREPLIFETIME(USelectiveVisibilityComponent, VisibleToPlayerId);
 }
 
-
-// Called when the game starts
-void USelectiveVisibilityComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
+void USelectiveVisibilityComponent::SetVisibleToPlayerId(int32 NewVisibleToPlayerId) {
 	if (GetOwner()->HasAuthority()) {
-		CurrentTargetedTime = 0;
-		Server_UpdateTargetPlayerId();
+		VisibleToPlayerId = NewVisibleToPlayerId;
+		OnRep_VisibleToPlayerId();
 	}
 }
 
-
-// Called every frame
-void USelectiveVisibilityComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void USelectiveVisibilityComponent::OnRep_VisibleToPlayerId()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	if (GetOwner()->HasAuthority() && ShouldUpdateTargetPlayerId(DeltaTime)) {
-		Server_UpdateTargetPlayerId();
-	}
+	UpdateVisibility();
 }
 
-bool USelectiveVisibilityComponent::ShouldUpdateTargetPlayerId(float DeltaSeconds)
-{
-	CurrentTargetedTime += DeltaSeconds;
-	if (CurrentTargetedTime > MaxTargetedTime)
-	{
-		CurrentTargetedTime = 0.0f;
-		return true;
-	}
-	return false;
-}
-
-void USelectiveVisibilityComponent::Server_UpdateTargetPlayerId_Implementation()
-{
-	AGameStateBase* GameState = GetWorld()->GetGameState();
-	if (GameState)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Updating targeted player"));
-		UE_LOG(LogTemp, Warning, TEXT("Current targeted player=%d"), TargetedPlayerId);
-
-		TArray<TObjectPtr<APlayerState>> Players = GameState->PlayerArray;
-
-		for (int i = 0; i <= Players.Num(); i++) {
-			int32 index = FMath::RandRange(0, Players.Num() - 1);
-			TObjectPtr<APlayerState> Player = Players[index];
-
-			if (Player.Get() != nullptr)
-			{
-				APlayerState* PlayerState = Player.Get();
-				UE_LOG(LogTemp, Display, TEXT("Checking playerid=%d for retargeting"), PlayerState->GetPlayerId());
-				if (PlayerState->GetPlayerId() != TargetedPlayerId)
-				{
-					UE_LOG(LogTemp, Display, TEXT("Retargeting to playerid=%d"), PlayerState->GetPlayerId());
-					TargetedPlayerId = PlayerState->GetPlayerId();
-					OnRep_TargetedPlayerId();
-					return;
-				}
-			}
-			else {
-				UE_LOG(LogTemp, Warning, TEXT("Player is null. Not updating targeted player"));
-			}
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("GameMode::GameState is null"));
-	}
-}
-
-void USelectiveVisibilityComponent::OnRep_TargetedPlayerId()
+void USelectiveVisibilityComponent::UpdateVisibility()
 {
 	APlayerController* Controller = GetWorld()->GetFirstPlayerController();
 	if (Controller == nullptr) {
@@ -114,7 +48,7 @@ void USelectiveVisibilityComponent::OnRep_TargetedPlayerId()
 	}
 
 	int32 PlayerId = PlayerState->GetPlayerId();
-	UE_LOG(LogTemp, Warning, TEXT("Updating visibility for new TargetedPlayerId=%d; Local player id=%d"), PlayerId, TargetedPlayerId);
+	UE_LOG(LogTemp, Warning, TEXT("Updating visibility for new TargetedPlayerId=%d; Local player id=%d"), VisibleToPlayerId, PlayerId);
 
 	ACharacter* Character = Cast<ACharacter>(GetOwner());
 	if (Character == nullptr) {
@@ -122,7 +56,7 @@ void USelectiveVisibilityComponent::OnRep_TargetedPlayerId()
 		return;
 	}
 
-	if (TargetedPlayerId == PlayerId) {
+	if (VisibleToPlayerId == PlayerId) {
 		Character->GetMesh()->SetVisibility(true);
 	}
 	else {
