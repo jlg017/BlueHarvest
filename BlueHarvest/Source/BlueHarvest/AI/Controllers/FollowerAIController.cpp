@@ -10,6 +10,7 @@
 #include "GameFramework/PlayerState.h"
 #include "GameFramework/GameStateBase.h"
 
+
 void AFollowerAIController::Tick(float DeltaTime) 
 {
 	if (ShouldUpdateTargetPlayerId(DeltaTime)) {

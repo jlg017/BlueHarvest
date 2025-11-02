@@ -32,6 +32,12 @@ public:
 
 protected:
 
+	// used for default player targeting behaviour
+	UPROPERTY(EditAnywhere)
+	float MaxTargetedTime = 5.0f;
+	UPROPERTY(EditAnywhere)
+	float CurrentTargetedTime = 0.0f;
+
 	/*
 	* Target Player Id
 	*/
@@ -57,10 +63,8 @@ protected:
 	void UpdateVisibleToPlayerId();
 
 private:
+
 	int32 TargetPlayerId;
 	int32 VisibleToPlayerId;
 
-	// used for default player targeting behaviour
-	float MaxTargetedTime = 5.0f;
-	float CurrentTargetedTime = 0.0f;
 };

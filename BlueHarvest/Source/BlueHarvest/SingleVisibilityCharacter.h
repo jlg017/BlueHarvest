@@ -12,6 +12,7 @@ class BLUEHARVEST_API ASingleVisibilityCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
+
 	// Sets default values for this character's properties
 	ASingleVisibilityCharacter();
 
