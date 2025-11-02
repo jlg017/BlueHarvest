@@ -30,6 +30,8 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Behavior")
 	FOnVisibleToPlayerIdChanged OnVisibleToPlayerIdChanged;
 
+	void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
+
 protected:
 
 	// used for default player targeting behaviour
@@ -66,5 +68,6 @@ private:
 
 	int32 TargetPlayerId;
 	int32 VisibleToPlayerId;
+	APawn* TargetPlayerPawn;
 
 };

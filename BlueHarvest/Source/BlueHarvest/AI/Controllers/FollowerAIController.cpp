@@ -67,8 +67,9 @@ void AFollowerAIController::UpdateTargetPlayerId_Implementation()
 
 					APawn* TargetPlayer = TargetPlayerState->GetPawn();
 					if (TargetPlayer) {
+						TargetPlayerPawn = TargetPlayer;
 						UE_LOG(LogTemp, Warning, TEXT("Moving to Actor %s"), *TargetPlayer->GetName());
-						MoveToActor(TargetPlayer);
+						MoveToActor(TargetPlayerPawn, 5.0f, false);
 					}
 					else
 					{
@@ -108,4 +109,10 @@ UFUNCTION(BlueprintNativeEvent)
 void AFollowerAIController::UpdateVisibleToPlayerId_Implementation()
 {
 	SetVisibleToPlayerId(TargetPlayerId);
+}
+
+void AFollowerAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
+{
+	// TODO: Attack?
+	MoveToActor(TargetPlayerPawn, 5.0f, false);
 }
