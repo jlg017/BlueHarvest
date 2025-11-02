@@ -20,6 +20,8 @@ class BLUEHARVEST_API AFollowerAIController : public AAIController
 public:
 
 	virtual void Tick(float DeltaTime) override;
+	virtual void BeginPlay() override;
+	virtual void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
 
 	FORCEINLINE int32 GetTargetPlayerId() { return TargetPlayerId; }
 	FORCEINLINE int32 GetVisibleToPlayerId() { return VisibleToPlayerId; }
@@ -29,8 +31,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Behavior")
 	FOnVisibleToPlayerIdChanged OnVisibleToPlayerIdChanged;
-
-	void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
 
 protected:
 

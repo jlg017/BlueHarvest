@@ -22,6 +22,14 @@ void AFollowerAIController::Tick(float DeltaTime)
 	}
 }
 
+void AFollowerAIController::BeginPlay()
+{
+	Super::BeginPlay();
+	UpdateTargetPlayerId();
+	UpdateVisibleToPlayerId();
+	CurrentTargetedTime = 0.0f;
+}
+
 void AFollowerAIController::SetTargetPlayerId(int32 NewTargetPlayerId)
 {
 	TargetPlayerId = NewTargetPlayerId;
