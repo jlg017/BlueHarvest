@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "HealthComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthDepleted);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BLUEHARVEST_API UHealthComponent : public UActorComponent
@@ -13,28 +15,31 @@ class BLUEHARVEST_API UHealthComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
-	UHealthComponent();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	UHealthComponent();
+
 	FORCEINLINE float GetHealth() const { return Health; }
 	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateHealth(float DeltaHealth);
+
+	UPROPERTY(BlueprintAssignable, Category = "Health")
+	FOnHealthDepleted OnHealthDepleted;
 
 protected:
 
 	UPROPERTY(ReplicatedUsing = OnRep_Health, BlueprintReadOnly, Category = Health)
-	float Health;
+	float Health = 0;
 	UPROPERTY(EditDefaultsOnly, Category = Health)
-	float MaxHealth;
+	float MaxHealth = 100;
 
 	virtual void BeginPlay() override;
-	// Applies Heal or Damage amount to Health
-	UFUNCTION(BlueprintCallable)
-	void UpdateHealth(float DeltaHealth);
 
 private:
 
 	UFUNCTION()
-	virtual void OnRep_Health(float DeltaHealth);
+	virtual void OnRep_Health(float PreviousHealth);
 
-		
 };

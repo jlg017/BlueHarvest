@@ -5,17 +5,6 @@
 #include "Net/UnrealNetwork.h"
 
 
-UHealthComponent::UHealthComponent()
-{
-	SetIsReplicatedByDefault(true);
-}
-
-void UHealthComponent::BeginPlay()
-{
-	Super::BeginPlay();
-	Health = MaxHealth;
-}
-
 void UHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -23,13 +12,29 @@ void UHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(UHealthComponent, Health);
 }
 
-void UHealthComponent::OnRep_Health(float DeltaHealth)
+UHealthComponent::UHealthComponent()
 {
-	UpdateHealth(DeltaHealth);
+	SetIsReplicatedByDefault(true);
+	Health = MaxHealth;
+}
+
+void UHealthComponent::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void UHealthComponent::OnRep_Health(float PreviousHealth)
+{
+	// send notify for local animation play, etc. 
 }
 
 void UHealthComponent::UpdateHealth(float DeltaHealth)
 {
 	float NewHealth = Health + DeltaHealth;
 	Health = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
+
+	if (Health == 0)
+	{
+		OnHealthDepleted.Broadcast();
+	}
 }
