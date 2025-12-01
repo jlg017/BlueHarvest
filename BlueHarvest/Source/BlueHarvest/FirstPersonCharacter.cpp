@@ -2,6 +2,7 @@
 
 
 #include "FirstPersonCharacter.h"
+#include "ActorComponents/HealthComponent.h"
 
 // Sets default values
 AFirstPersonCharacter::AFirstPersonCharacter()
@@ -38,6 +39,10 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 
 	// The owning player doesn't see the regular (third-person) body mesh.
 	GetMesh()->SetOwnerNoSee(true);
+
+	bReplicates = true;
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+
 }
 
 // Called when the game starts or when spawned
