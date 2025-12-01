@@ -8,8 +8,9 @@
 #include "HealthComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthDepleted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthChanged);
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BLUEHARVEST_API UHealthComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -19,14 +20,22 @@ public:
 
 	UHealthComponent();
 
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE float GetHealth() const { return Health; }
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateHealth(float DeltaHealth);
 
+	UFUNCTION(Server, Reliable)
+	void Server_UpdateHealth(float DeltaHealth);
+
 	UPROPERTY(BlueprintAssignable, Category = "Health")
 	FOnHealthDepleted OnHealthDepleted;
+
+	UPROPERTY(BlueprintAssignable, Category = "Health")
+	FOnHealthDepleted OnHealthChanged;
 
 protected:
 
@@ -36,8 +45,6 @@ protected:
 	float MaxHealth = 100;
 
 	virtual void BeginPlay() override;
-
-private:
 
 	UFUNCTION()
 	virtual void OnRep_Health(float PreviousHealth);

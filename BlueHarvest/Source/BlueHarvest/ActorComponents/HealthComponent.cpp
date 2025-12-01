@@ -25,13 +25,32 @@ void UHealthComponent::BeginPlay()
 
 void UHealthComponent::OnRep_Health(float PreviousHealth)
 {
-	// send notify for local animation play, etc. 
+	OnHealthChanged.Broadcast();
+
+	if (Health == 0)
+	{
+		OnHealthDepleted.Broadcast();
+	}
 }
 
 void UHealthComponent::UpdateHealth(float DeltaHealth)
 {
+	if (GetOwner()->HasAuthority()) {
+		Server_UpdateHealth_Implementation(DeltaHealth);
+	}
+	else
+	{
+		Server_UpdateHealth(DeltaHealth);
+	}
+}
+
+void UHealthComponent::Server_UpdateHealth_Implementation(float DeltaHealth)
+{
+	float PrevHealth = Health;
 	float NewHealth = Health + DeltaHealth;
 	Health = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
+
+	OnHealthChanged.Broadcast();
 
 	if (Health == 0)
 	{
