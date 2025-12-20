@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AI/Characters/AIEnemyCharacter.h"
 #include "SingleVisibilityCharacter.generated.h"
 
 UCLASS()
-class BLUEHARVEST_API ASingleVisibilityCharacter : public ACharacter
+class BLUEHARVEST_API ASingleVisibilityCharacter : public AAIEnemyCharacter
 {
 	GENERATED_BODY()
 
@@ -18,6 +19,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual bool Attack(APawn* Target) override;
 
 protected:
 	// Called when the game starts or when spawned

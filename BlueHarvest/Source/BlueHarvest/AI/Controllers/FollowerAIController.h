@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "BlueHarvest/AI/Characters/AIEnemyCharacter.h"
+
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "Net/UnrealNetwork.h"
@@ -39,6 +41,10 @@ protected:
 	float MaxTargetedTime = 5.0f;
 	UPROPERTY(EditAnywhere)
 	float CurrentTargetedTime = 0.0f;
+	UPROPERTY(EditAnywhere)
+	float TargetAcceptanceRadius = 5.0f;
+
+	virtual void OnPossess(APawn* InPawn) override;
 
 	/*
 	* Target Player Id
@@ -70,4 +76,5 @@ private:
 	int32 VisibleToPlayerId;
 	APawn* TargetPlayerPawn;
 
+	AAIEnemyCharacter* ControlledCharacter;
 };

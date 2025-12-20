@@ -4,7 +4,6 @@
 #include "FollowerAIController.h"
 
 #include "BlueHarvest/ActorComponents/SelectiveVisibilityComponent.h"
-#include "BlueHarvest/SingleVisibilityCharacter.h"
 
 #include "Net/UnrealNetwork.h"
 #include "GameFramework/PlayerState.h"
@@ -28,6 +27,11 @@ void AFollowerAIController::BeginPlay()
 	UpdateTargetPlayerId();
 	UpdateVisibleToPlayerId();
 	CurrentTargetedTime = 0.0f;
+}
+
+void AFollowerAIController::OnPossess(APawn* InPawn)
+{
+	ControlledCharacter = Cast<AAIEnemyCharacter>(InPawn);
 }
 
 void AFollowerAIController::SetTargetPlayerId(int32 NewTargetPlayerId)
@@ -77,7 +81,7 @@ void AFollowerAIController::UpdateTargetPlayerId_Implementation()
 					if (TargetPlayer) {
 						TargetPlayerPawn = TargetPlayer;
 						UE_LOG(LogTemp, Warning, TEXT("Moving to Actor %s"), *TargetPlayer->GetName());
-						MoveToActor(TargetPlayerPawn, 5.0f, false);
+						MoveToActor(TargetPlayerPawn, TargetAcceptanceRadius, false);
 					}
 					else
 					{
@@ -121,6 +125,13 @@ void AFollowerAIController::UpdateVisibleToPlayerId_Implementation()
 
 void AFollowerAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
-	// TODO: Attack?
-	MoveToActor(TargetPlayerPawn, 5.0f, false);
+	// TODO: Attack
+	if (ControlledCharacter)
+	{
+		ControlledCharacter->Attack(TargetPlayerPawn);
+	}
+
+	MoveToActor(TargetPlayerPawn, TargetAcceptanceRadius, false);
+
+
 }

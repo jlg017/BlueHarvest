@@ -54,3 +54,8 @@ void ASingleVisibilityCharacter::UpdateVisibleToPlayerId(int32 NewVisibleToPlaye
 	VisibleToPlayerId = NewVisibleToPlayerId;
 	VisibilityComponent->SetVisibleToPlayerId(NewVisibleToPlayerId);
 }
+
+bool ASingleVisibilityCharacter::Attack(APawn* Target)
+{
+	return Super::Attack(Target);
+}
