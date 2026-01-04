@@ -49,4 +49,7 @@ protected:
 	UFUNCTION()
 	virtual void OnRep_Health(float PreviousHealth);
 
+private:
+	UFUNCTION()
+	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 };

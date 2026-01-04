@@ -13,6 +13,7 @@
 
 void AFollowerAIController::Tick(float DeltaTime) 
 {
+	Super::Tick(DeltaTime);
 	if (ShouldUpdateTargetPlayerId(DeltaTime)) {
 		UpdateTargetPlayerId();
 	}
@@ -28,6 +29,14 @@ void AFollowerAIController::BeginPlay()
 	UpdateTargetPlayerId();
 	UpdateVisibleToPlayerId();
 	CurrentTargetedTime = 0.0f;
+
+	bSetControlRotationFromPawnOrientation = false;
+}
+
+void AFollowerAIController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	ControlledCharacter = Cast<ASingleVisibilityCharacter>(GetPawn());
 }
 
 void AFollowerAIController::SetTargetPlayerId(int32 NewTargetPlayerId)
@@ -77,6 +86,7 @@ void AFollowerAIController::UpdateTargetPlayerId_Implementation()
 					if (TargetPlayer) {
 						TargetPlayerPawn = TargetPlayer;
 						UE_LOG(LogTemp, Warning, TEXT("Moving to Actor %s"), *TargetPlayer->GetName());
+						SetFocus(TargetPlayerPawn);
 						MoveToActor(TargetPlayerPawn, 5.0f, false);
 					}
 					else
@@ -122,5 +132,15 @@ void AFollowerAIController::UpdateVisibleToPlayerId_Implementation()
 void AFollowerAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
 	// TODO: Attack?
+	if (ControlledCharacter) {
+		//UE_LOG(LogTemp, Warning, TEXT("Attacking player '%s'"), *TargetPlayerPawn->GetName());
+		ControlledCharacter->Attack(TargetPlayerPawn);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ControlledCharacter is null"));
+	}
+
+	SetFocus(TargetPlayerPawn);
 	MoveToActor(TargetPlayerPawn, 5.0f, false);
 }

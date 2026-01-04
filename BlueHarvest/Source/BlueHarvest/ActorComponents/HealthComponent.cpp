@@ -15,22 +15,38 @@ void UHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 UHealthComponent::UHealthComponent()
 {
 	SetIsReplicatedByDefault(true);
-	Health = MaxHealth;
 }
 
 void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	Health = MaxHealth;
+
+	AActor* Owner = GetOwner();
+	if (Owner)
+	{
+		// Bind the damage handling function to the Actor's built-in damage event
+		Owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::HandleTakeAnyDamage);
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("Owner is null"));
+	}
 }
 
 void UHealthComponent::OnRep_Health(float PreviousHealth)
 {
 	OnHealthChanged.Broadcast();
 
-	if (Health == 0)
+	if (Health <= 0.0f)
 	{
 		OnHealthDepleted.Broadcast();
 	}
+}
+
+void UHealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Player '%s' has taken %f damage"), *GetName(), Damage);
+	UpdateHealth(-Damage);
 }
 
 void UHealthComponent::UpdateHealth(float DeltaHealth)
@@ -52,7 +68,7 @@ void UHealthComponent::Server_UpdateHealth_Implementation(float DeltaHealth)
 
 	OnHealthChanged.Broadcast();
 
-	if (Health == 0)
+	if (Health <= 0.0f)
 	{
 		OnHealthDepleted.Broadcast();
 	}

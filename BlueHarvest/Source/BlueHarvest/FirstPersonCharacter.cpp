@@ -40,8 +40,12 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 	// The owning player doesn't see the regular (third-person) body mesh.
 	GetMesh()->SetOwnerNoSee(true);
 
+	// Set collision so mesh doesn't fall through floor on death
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
 	bReplicates = true;
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+	SetCanBeDamaged(true);
 
 }
 
@@ -51,6 +55,17 @@ void AFirstPersonCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	check(GEngine != nullptr);
+
+	if (HealthComponent)
+	{
+		FString HasAuthVal = HasAuthority() ? TEXT("true") : TEXT("false");
+		UE_LOG(LogTemp, Warning, TEXT("Adding OnHealthDepleted delegate - HasAuthority=%s"), *HasAuthVal);
+		HealthComponent->OnHealthDepleted.AddDynamic(this, &AFirstPersonCharacter::HandleDeath);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HealthComponent is NULL"));
+	}
 }
 
 // Called every frame
@@ -59,6 +74,18 @@ void AFirstPersonCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+//float AFirstPersonCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+//{
+//	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+//	UE_LOG(LogTemp, Warning, TEXT("Taking Damage: Damage = %f"), Damage);
+//	if(HasAuthority())
+//	{
+//		HealthComponent->UpdateHealth(-Damage);
+//	}
+//	
+//	return Damage;
+//}
 
 // Called to bind functionality to input
 void AFirstPersonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -113,4 +140,15 @@ void AFirstPersonCharacter::CrouchButtonPressed()
 	else {
 		Crouch();
 	}
+}
+
+void AFirstPersonCharacter::HandleDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Player %s died"), *GetName());
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (PlayerController) {
+		DisableInput(PlayerController);
+		FirstPersonMesh->SetVisibility(false);
+	}
+	GetMesh()->SetSimulatePhysics(true);
 }

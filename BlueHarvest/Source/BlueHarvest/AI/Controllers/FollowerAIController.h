@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "BlueHarvest/SingleVisibilityCharacter.h"
+
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "Net/UnrealNetwork.h"
@@ -21,6 +23,7 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 	virtual void BeginPlay() override;
+	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
 
 	FORCEINLINE int32 GetTargetPlayerId() { return TargetPlayerId; }
@@ -70,4 +73,5 @@ private:
 	int32 VisibleToPlayerId;
 	APawn* TargetPlayerPawn;
 
+	ASingleVisibilityCharacter* ControlledCharacter;
 };
