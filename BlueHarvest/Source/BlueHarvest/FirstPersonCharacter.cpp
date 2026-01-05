@@ -75,18 +75,6 @@ void AFirstPersonCharacter::Tick(float DeltaTime)
 
 }
 
-//float AFirstPersonCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
-//{
-//	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
-//	UE_LOG(LogTemp, Warning, TEXT("Taking Damage: Damage = %f"), Damage);
-//	if(HasAuthority())
-//	{
-//		HealthComponent->UpdateHealth(-Damage);
-//	}
-//	
-//	return Damage;
-//}
-
 // Called to bind functionality to input
 void AFirstPersonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
